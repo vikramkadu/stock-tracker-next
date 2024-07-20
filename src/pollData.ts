@@ -17,24 +17,24 @@ const fetchCoinData = async () => {
       {
         headers: {
           'content-type': 'application/json',
-          'x-api-key': '304568a3-a781-40e7-b3ac-8f316e5d0b5e',
+          'x-api-key': process.env.LIVECOIN_API_KEY,
         },
       }
     );
 
     const coins = response.data;
-    console.log('coins',coins)
-
     for (const coin of coins) {
       const newCoin = new Coin({
         symbol: coin.code,
         name: coin.name,
         price: coin.rate,
+        volume: coin.volume,
+        cap: coin.cap,
+        delta: coin.delta,
         timestamp: new Date(),
       });
       await newCoin.save();
     }
-
     console.log('Data polled and saved');
   } catch (error) {
     console.error('Error polling data:', error);
@@ -43,7 +43,7 @@ const fetchCoinData = async () => {
 
 const pollData = async () => {
   await connectDB();
-  setInterval(fetchCoinData, 20000); 
+  setInterval(fetchCoinData, 10000); 
 };
 
 export default pollData;

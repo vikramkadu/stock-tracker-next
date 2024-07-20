@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { fetchStockData } from '@/redux/stockSlice';
 import CryptoModal from '@/components/CryptoModal';
 import styles from '@/styles/Home.module.css';
+import { formatNumber } from '@/utils/formatNumber';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,7 +14,6 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchStockData(symbol));
-
     const intervalId = setInterval(() => {
       dispatch(fetchStockData(symbol));
     }, 10000);
@@ -42,12 +42,15 @@ const Home: React.FC = () => {
         <button className={styles.button} onClick={handleOpenModal}>Change</button>
       </div>
       <CryptoModal isOpen={isModalOpen} onClose={handleCloseModal} onSelect={handleSymbolChange} symbol={symbol} />
-      <table  className={styles.table}>
+      <table border={1} className={styles.table}>
         <thead>
           <tr>
             <th>Sr</th>
             <th>Symbol</th>
             <th>Price</th>
+            <th>Volume</th>
+            <th>Market Cap</th>
+            <th>Change (1h)</th>
             <th>Timestamp</th>
           </tr>
         </thead>
@@ -57,6 +60,11 @@ const Home: React.FC = () => {
               <td>{index + 1}</td>
               <td>{entry.symbol}</td>
               <td>${entry.price.toFixed(2)}</td>
+              <td>${formatNumber(entry?.volume)}</td>  
+              <td>${formatNumber(entry?.cap)}</td>  
+              <td className={entry.delta?.hour < 1 ? styles.positiveChange : styles.negativeChange}>
+                {((1-entry.delta?.hour)*100).toFixed(2)}%
+              </td>
               <td>{new Date(entry.timestamp).toLocaleString()}</td>
             </tr>
           ))}
