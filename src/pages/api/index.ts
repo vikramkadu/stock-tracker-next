@@ -1,7 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv';
 import connectDB from './config/db';
-import pollData from '@/pollData';
 
 config();
 
@@ -18,7 +17,6 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
-pollData();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
