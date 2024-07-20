@@ -48,8 +48,8 @@ npm install
 
 3. Set up your environment variables. Create a .env file in the root of the project and add the following:
 ```
-NEXT_PUBLIC_API_KEY=your_livecoinwatch_api_key
-MONGO_URI=your_mongodb_connection_string
+LIVECOIN_API_KEY=your_livecoinwatch_api_key
+DATABASE_CONNECTIONSTRING=your_mongodb_connection_string
 ```
 
 4. Run the development server:
